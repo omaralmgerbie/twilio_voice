@@ -176,7 +176,7 @@ public class TwilioVoicePlugin implements FlutterPlugin, MethodChannel.MethodCal
                         String to = intent.getStringExtra(Constants.CALL_FROM);
                         String from = intent.getStringExtra(Constants.CALL_TO);
                         Log.d(TAG, "calling: " + to);
-                        params.put("To", to.replace("client:", ""));
+                        params.put("toCaller", to.replace("client:", ""));
                         sendPhoneCallEvents("ReturningCall|" + from + "|" + to + "|" + "Incoming");
                         this.callOutgoing = true;
                         final ConnectOptions connectOptions = new ConnectOptions.Builder(this.accessToken)
@@ -430,7 +430,7 @@ public class TwilioVoicePlugin implements FlutterPlugin, MethodChannel.MethodCal
             for (Map.Entry<String, Object> entry : args.entrySet()) {
                 String key = entry.getKey();
                 Object value = entry.getValue();
-                if(!key.equals("From") && value != null){
+                if(value != null){
                     params.put(key, value.toString());
                 }
             }
@@ -438,7 +438,7 @@ public class TwilioVoicePlugin implements FlutterPlugin, MethodChannel.MethodCal
             final ConnectOptions connectOptions = new ConnectOptions.Builder(this.accessToken)
                     .params(params)
                     .build();
-            Log.d(TAG, "calling to " + call.argument("To").toString());
+            Log.d(TAG, "calling to " + call.argument("toCaller").toString());
             this.activeCall = Voice.connect(this.activity, connectOptions, this.callListener);
             result.success(true);
         } else if (call.method.equals("registerClient")) {

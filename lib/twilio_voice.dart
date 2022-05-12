@@ -241,8 +241,8 @@ class Call {
         ActiveCall(from: from, to: to, callDirection: CallDirection.outgoing);
 
     var options = extraOptions ?? Map<String, dynamic>();
-    options['From'] = from;
-    options['To'] = to;
+    options['fromCaller'] = from;
+    options['toCaller'] = to;
     return _channel.invokeMethod('makeCall', options);
   }
 

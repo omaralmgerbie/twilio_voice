@@ -182,7 +182,7 @@ public class TwilioVoicePlugin implements FlutterPlugin, MethodChannel.MethodCal
                         Log.d(TAG, "calling: " + to);
                         params.put("toCaller", to.replace("client:", ""));
                         params.put("fromCaller", from.replace("client:", ""));
-                        sendPhoneCallEvents("ReturningCall|" + from + "|" + to + "|" + "Incoming" + "|" + formatCustomParams(customParams));
+                        sendPhoneCallEvents("ReturningCall|" + from + "|" + to + "|" + "Incoming"  + formatCustomParams(customParams));
                         this.callOutgoing = true;
                         final ConnectOptions connectOptions = new ConnectOptions.Builder(this.accessToken)
                                 .params(params)

@@ -237,7 +237,8 @@ public class IncomingCallNotificationService extends Service {
         SharedPreferences preferences = getApplicationContext().getSharedPreferences(TwilioPreferences, Context.MODE_PRIVATE);
         boolean prefsShow = preferences.getBoolean("show-notifications", true);
         if (prefsShow) {
-            buildMissedCallNotification(cancelledCallInvite.getFrom(), cancelledCallInvite.getTo());
+            String callerName = cancelledCallInvite.getCustomParameters().get("callFromUser");
+            buildMissedCallNotification(cancelledCallInvite.getFrom(), cancelledCallInvite.getTo(), callerName);
         }
         endForeground();
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
@@ -252,12 +253,12 @@ public class IncomingCallNotificationService extends Service {
     }
 
 
-    private void buildMissedCallNotification(String callerId, String to) {
+    private void buildMissedCallNotification(String callerId, String to, String callerName) {
 
         String fromId = callerId.replace("client:", "");
         Context context = getApplicationContext();
         SharedPreferences preferences = context.getSharedPreferences(TwilioPreferences, Context.MODE_PRIVATE);
-        String callerName = preferences.getString(fromId, preferences.getString("defaultCaller", "Unknown caller"));
+        //String callerName = preferences.getString(fromId, preferences.getString("defaultCaller", "Unknown caller"));
         String title = getString(R.string.notification_missed_call, callerName);
 
 

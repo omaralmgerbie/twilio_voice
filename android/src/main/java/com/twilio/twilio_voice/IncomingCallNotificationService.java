@@ -238,7 +238,8 @@ public class IncomingCallNotificationService extends Service {
         boolean prefsShow = preferences.getBoolean("show-notifications", true);
         if (prefsShow) {
             String callerName = cancelledCallInvite.getCustomParameters().get("callFromUser");
-            buildMissedCallNotification(cancelledCallInvite.getFrom(), cancelledCallInvite.getTo(), callerName);
+            String receiverName = cancelledCallInvite.getCustomParameters().get("callToUser");
+            buildMissedCallNotification(cancelledCallInvite.getFrom(), cancelledCallInvite.getTo(), callerName, receiverName);
         }
         endForeground();
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
@@ -253,7 +254,7 @@ public class IncomingCallNotificationService extends Service {
     }
 
 
-    private void buildMissedCallNotification(String callerId, String to, String callerName) {
+    private void buildMissedCallNotification(String callerId, String to, String callerName, String receiverName) {
 
         String fromId = callerId.replace("client:", "");
         Context context = getApplicationContext();
@@ -267,6 +268,7 @@ public class IncomingCallNotificationService extends Service {
         returnCallIntent.putExtra(Constants.CALL_TO, to);
         returnCallIntent.putExtra(Constants.CALL_TO_NAME, callerName);
         returnCallIntent.putExtra(Constants.CALL_FROM, callerId);
+        returnCallIntent.putExtra(Constants.CALL_FROM_NAME, receiverName);
         PendingIntent piReturnCallIntent = PendingIntent.getService(getApplicationContext(), 0, returnCallIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
 

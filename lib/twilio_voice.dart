@@ -236,9 +236,9 @@ class Call {
   Future<bool?> place(
       {required String from,
       required String to,
-      Map<String, dynamic>? extraOptions}) {
+      Map<String, dynamic>? extraOptions, Map<String, dynamic>? customParams}) {
     _activeCall =
-        ActiveCall(from: from, to: to, callDirection: CallDirection.outgoing);
+        ActiveCall(from: from, to: to, callDirection: CallDirection.outgoing, customParams: customParams);
 
     var options = extraOptions ?? Map<String, dynamic>();
     options['fromCaller'] = from;

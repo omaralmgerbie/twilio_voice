@@ -114,14 +114,18 @@ public class AnswerJavaActivity extends AppCompatActivity {
                     checkPermissionsAndAccept();
                     break;
                 case Constants.ACTION_END_CALL:
-                    Log.d(TAG, "ending call" + activeCall != null ? "TRue" : "False");
-                    activeCall.disconnect();
+                    Log.d(TAG, "ending call" + (activeCall != null ? "TRue" : "False"));
+                    if(activeCall != null) {
+                        activeCall.disconnect();
+                    }
                     initiatedDisconnect = true;
                     finish();
                     break;
                 case Constants.ACTION_TOGGLE_MUTE:
                     boolean muted = activeCall.isMuted();
-                    activeCall.mute(!muted);
+                    if(activeCall != null) {
+                        activeCall.mute(!muted);
+                    }
                     break;
                 default: {
                 }
@@ -194,13 +198,13 @@ public class AnswerJavaActivity extends AppCompatActivity {
         acceptIntent.putExtra(Constants.INCOMING_CALL_NOTIFICATION_ID, activeCallNotificationId);
         Log.d(TAG, "Clicked accept startService");
         startService(acceptIntent);
-        if (TwilioVoicePlugin.hasStarted) {
+        /*if (TwilioVoicePlugin.hasStarted) {
             finish();
-        } else {
+        } else {*/
             Log.d(TAG, "Answering call");
             activeCallInvite.accept(this, callListener);
             notificationManager.cancel(activeCallNotificationId);
-        }
+        //}
     }
 
     private void startAnswerActivity(Call call) {

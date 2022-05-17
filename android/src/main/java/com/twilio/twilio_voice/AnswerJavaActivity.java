@@ -212,6 +212,7 @@ public class AnswerJavaActivity extends AppCompatActivity {
         intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra(Constants.CALL_FROM, call.getFrom());
+        intent.putExtra(Constants.CALL_FROM_NAME, activeCallInvite.getCustomParameters().get("callFromUser"));
         startActivity(intent);
         Log.d(TAG, "Connected");
     }

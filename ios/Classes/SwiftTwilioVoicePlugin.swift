@@ -119,8 +119,8 @@ public class SwiftTwilioVoicePlugin: NSObject, FlutterPlugin,  FlutterStreamHand
                 }
             }
         } else if flutterCall.method == "makeCall" {
-            guard let callTo = arguments["To"] as? String else {return}
-            guard let callFrom = arguments["From"] as? String else {return}
+            guard let callTo = arguments["toCaller"] as? String else {return}
+            guard let callFrom = arguments["fromCaller"] as? String else {return}
             self.callArgs = arguments
             self.callOutgoing = true
             if let accessToken = arguments["accessToken"] as? String{
@@ -804,9 +804,7 @@ public class SwiftTwilioVoicePlugin: NSObject, FlutterPlugin,  FlutterStreamHand
         
         let connectOptions: ConnectOptions = ConnectOptions(accessToken: token) { (builder) in
             for (key, value) in self.callArgs {
-                if (key != "From") {
-                    builder.params[key] = "\(value)"
-                }
+                builder.params[key] = "\(value)"
             }
             builder.uuid = uuid
         }

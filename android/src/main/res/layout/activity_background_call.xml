@@ -26,6 +26,9 @@
             android:drawableLeft="@drawable/splash_icon"
             android:drawableTint="#FFFFFF"
             android:drawablePadding="5dp"
+            android:scaleX="0.5"
+            android:scaleY="0.5"
+            android:textSize="28sp"
             android:text="KeyZane voice call" />
     </LinearLayout>
 

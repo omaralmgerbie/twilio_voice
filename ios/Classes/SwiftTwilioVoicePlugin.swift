@@ -468,10 +468,10 @@ public class SwiftTwilioVoicePlugin: NSObject, FlutterPlugin,  FlutterStreamHand
          */
         UserDefaults.standard.set(Date(), forKey: kCachedBindingDate)
         
-        var from:String = callInvite.from ?? defaultCaller
-        from = from.replacingOccurrences(of: "client:", with: "")
+        let from:String = callInvite.customParameters?["callFromUser"] ?? defaultCaller
+        let to:String = callInvite.customParameters?["callToUser"] ?? callInvite.to
         
-        self.sendPhoneCallEvents(description: "Ringing|\(from)|\(callInvite.to)|Incoming\(formatCustomParams(params: callInvite.customParameters))", isError: false)
+        self.sendPhoneCallEvents(description: "Ringing|\(from)|\(to)|Incoming\(formatCustomParams(params: callInvite.customParameters))", isError: false)
         reportIncomingCall(from: from, uuid: callInvite.uuid)
         self.callInvite = callInvite
     }
@@ -492,7 +492,7 @@ public class SwiftTwilioVoicePlugin: NSObject, FlutterPlugin,  FlutterStreamHand
     public func cancelledCallInviteReceived(cancelledCallInvite: CancelledCallInvite, error: Error) {
         self.sendPhoneCallEvents(description: "Missed Call", isError: false)
         self.sendPhoneCallEvents(description: "LOG|cancelledCallInviteCanceled:", isError: false)
-        self.showMissedCallNotification(from: cancelledCallInvite.from, to: cancelledCallInvite.to)
+        self.showMissedCallNotification(from: cancelledCallInvite.customParameters?["callFromUser"] ?? cancelledCallInvite.from, to: cancelledCallInvite.customParameters?["callToUser"] ?? cancelledCallInvite.to)
         if (self.callInvite == nil) {
             self.sendPhoneCallEvents(description: "LOG|No pending call invite", isError: false)
             return
@@ -512,13 +512,12 @@ public class SwiftTwilioVoicePlugin: NSObject, FlutterPlugin,  FlutterStreamHand
           if settings.authorizationStatus == .authorized {
             let content = UNMutableNotificationContent()
             var userName:String?
-            if var from = from{
-                from = from.replacingOccurrences(of: "client:", with: "")
-                content.userInfo = ["type":"twilio-missed-call", "From":from]
+            if let from = from{
+                content.userInfo = ["type":"twilio-missed-call", "fromCaller":from]
                 if let to = to{
-                    content.userInfo["To"] = to
+                    content.userInfo["toCaller"] = to
                 }
-                userName = self.clients[from]
+                userName = from
             }
             
             let title = userName ?? self.clients["defaultCaller"] ?? self.defaultCaller
@@ -764,7 +763,7 @@ public class SwiftTwilioVoicePlugin: NSObject, FlutterPlugin,  FlutterStreamHand
         
         let callUpdate = CXCallUpdate()
         callUpdate.remoteHandle = callHandle
-        callUpdate.localizedCallerName = clients[from] ?? self.clients["defaultCaller"] ?? defaultCaller
+        callUpdate.localizedCallerName = from
         callUpdate.supportsDTMF = true
         callUpdate.supportsHolding = true
         callUpdate.supportsGrouping = false

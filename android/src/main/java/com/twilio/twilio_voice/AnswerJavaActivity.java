@@ -27,9 +27,11 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import com.bumptech.glide.Glide;
 import com.twilio.voice.Call;
 import com.twilio.voice.CallException;
 import com.twilio.voice.CallInvite;
+
 
 
 public class AnswerJavaActivity extends AppCompatActivity {
@@ -162,9 +164,8 @@ public class AnswerJavaActivity extends AppCompatActivity {
             //String caller = preferences.getString(fromId, preferences.getString("defaultCaller", getString(R.string.unknown_caller)));
             String caller = activeCallInvite.getCustomParameters().get("callFromUser");
             String callerImage = activeCallInvite.getCustomParameters().get("fromUserImage");
+            Glide.with(this).load(callerImage).into(cvImage);
             tvUserName.setText(caller);
-            cvImage.setImageURI(Uri.parse(callerImage));
-
             btnAnswer.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

@@ -92,7 +92,6 @@
 
                 <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/cvImage"
-                    style="@style/CircularImageViewBordered"
                     android:layout_width="200dp"
                     android:layout_height="200dp"
                     android:src="@drawable/ic_person_24"

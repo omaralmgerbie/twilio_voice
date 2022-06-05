@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.nfc.Tag;
 import android.os.Build;
 import android.os.Bundle;
@@ -50,6 +51,7 @@ public class AnswerJavaActivity extends AppCompatActivity {
     private TextView tvCallStatus;
     private ImageView btnAnswer;
     private ImageView btnReject;
+    private ImageView cvImage;
     Call.Listener callListener = callListener();
 
     @Override
@@ -61,6 +63,7 @@ public class AnswerJavaActivity extends AppCompatActivity {
         tvCallStatus = (TextView) findViewById(R.id.tvCallStatus);
         btnAnswer = (ImageView) findViewById(R.id.btnAnswer);
         btnReject = (ImageView) findViewById(R.id.btnReject);
+        cvImage = (ImageView) findViewById(R.id.cvImage);
 
         KeyguardManager kgm = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
         boolean isKeyguardUp = kgm.inKeyguardRestrictedInputMode();
@@ -158,7 +161,9 @@ public class AnswerJavaActivity extends AppCompatActivity {
             SharedPreferences preferences = getApplicationContext().getSharedPreferences(TwilioPreferences, Context.MODE_PRIVATE);
             //String caller = preferences.getString(fromId, preferences.getString("defaultCaller", getString(R.string.unknown_caller)));
             String caller = activeCallInvite.getCustomParameters().get("callFromUser");
+            String callerImage = activeCallInvite.getCustomParameters().get("fromUserImage");
             tvUserName.setText(caller);
+            cvImage.setImageURI(Uri.parse(callerImage));
 
             btnAnswer.setOnClickListener(new View.OnClickListener() {
                 @Override

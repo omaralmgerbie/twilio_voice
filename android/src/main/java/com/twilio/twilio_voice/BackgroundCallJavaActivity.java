@@ -28,6 +28,7 @@ import androidx.lifecycle.ProcessLifecycleOwner;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 //import com.twilio.voice.Call;
+import com.bumptech.glide.Glide;
 import com.twilio.voice.CallInvite;
 
 public class BackgroundCallJavaActivity extends AppCompatActivity {
@@ -47,6 +48,7 @@ public class BackgroundCallJavaActivity extends AppCompatActivity {
     private ImageView btnMute;
     private ImageView btnOutput;
     private ImageView btnHangUp;
+    private ImageView cvImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +61,8 @@ public class BackgroundCallJavaActivity extends AppCompatActivity {
         btnMute = (ImageView) findViewById(R.id.btnMute);
         btnOutput = (ImageView) findViewById(R.id.btnOutput);
         btnHangUp = (ImageView) findViewById(R.id.btnHangUp);
+        cvImage = (ImageView) findViewById(R.id.cvImage);
+
 
         KeyguardManager kgm = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
         Boolean isKeyguardUp = kgm.inKeyguardRestrictedInputMode();
@@ -100,10 +104,11 @@ public class BackgroundCallJavaActivity extends AppCompatActivity {
                 SharedPreferences preferences = getApplicationContext().getSharedPreferences(TwilioPreferences, Context.MODE_PRIVATE);
                 //String caller = preferences.getString(fromId, preferences.getString("defaultCaller", getString(R.string.unknown_caller)));
                 String caller = intent.getStringExtra(Constants.CALL_FROM_NAME);
+                String callerImage = intent.getStringExtra(Constants.FROM_USER_IMAGE);
                 Log.d(TAG, "handleCallIntent");
                 Log.d(TAG, "caller from");
                 Log.d(TAG, caller);
-
+                Log.d("FROM_USER_IMAGE", callerImage);
                 tvUserName.setText(caller);
                 tvCallStatus.setText(getString(R.string.connected_status));
                 Log.d(TAG, "handleCallIntent-");

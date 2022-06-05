@@ -27,7 +27,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
-import com.bumptech.glide.Glide;
 import com.twilio.voice.Call;
 import com.twilio.voice.CallException;
 import com.twilio.voice.CallInvite;
@@ -53,7 +52,7 @@ public class AnswerJavaActivity extends AppCompatActivity {
     private TextView tvCallStatus;
     private ImageView btnAnswer;
     private ImageView btnReject;
-    private ImageView cvImage;
+    private String callerImage;
     Call.Listener callListener = callListener();
 
     @Override
@@ -163,8 +162,7 @@ public class AnswerJavaActivity extends AppCompatActivity {
             SharedPreferences preferences = getApplicationContext().getSharedPreferences(TwilioPreferences, Context.MODE_PRIVATE);
             //String caller = preferences.getString(fromId, preferences.getString("defaultCaller", getString(R.string.unknown_caller)));
             String caller = activeCallInvite.getCustomParameters().get("callFromUser");
-            String callerImage = activeCallInvite.getCustomParameters().get("fromUserImage");
-            Glide.with(this).load(callerImage).into(cvImage);
+            callerImage = activeCallInvite.getCustomParameters().get("fromUserImage");
             tvUserName.setText(caller);
             btnAnswer.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -219,6 +217,7 @@ public class AnswerJavaActivity extends AppCompatActivity {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra(Constants.CALL_FROM, call.getFrom());
         intent.putExtra(Constants.CALL_FROM_NAME, activeCallInvite.getCustomParameters().get("callFromUser"));
+        intent.putExtra(Constants.FROM_USER_IMAGE, callerImage);
         startActivity(intent);
         Log.d(TAG, "Connected");
     }

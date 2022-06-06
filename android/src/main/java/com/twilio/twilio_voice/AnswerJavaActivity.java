@@ -52,7 +52,6 @@ public class AnswerJavaActivity extends AppCompatActivity {
     private TextView tvCallStatus;
     private ImageView btnAnswer;
     private ImageView btnReject;
-    private String callerImage;
     Call.Listener callListener = callListener();
 
     @Override
@@ -161,7 +160,6 @@ public class AnswerJavaActivity extends AppCompatActivity {
             SharedPreferences preferences = getApplicationContext().getSharedPreferences(TwilioPreferences, Context.MODE_PRIVATE);
             //String caller = preferences.getString(fromId, preferences.getString("defaultCaller", getString(R.string.unknown_caller)));
             String caller = activeCallInvite.getCustomParameters().get("callFromUser");
-            callerImage = activeCallInvite.getCustomParameters().get("fromUserImage");
             tvUserName.setText(caller);
             btnAnswer.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -216,7 +214,7 @@ public class AnswerJavaActivity extends AppCompatActivity {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra(Constants.CALL_FROM, call.getFrom());
         intent.putExtra(Constants.CALL_FROM_NAME, activeCallInvite.getCustomParameters().get("callFromUser"));
-        intent.putExtra(Constants.FROM_USER_IMAGE, callerImage);
+        intent.putExtra(Constants.FROM_USER_IMAGE, activeCallInvite.getCustomParameters().get("fromUserImage"));
         startActivity(intent);
         Log.d(TAG, "Connected");
     }

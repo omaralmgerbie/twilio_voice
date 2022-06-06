@@ -9,7 +9,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.PowerManager;
@@ -29,7 +32,12 @@ import androidx.lifecycle.ProcessLifecycleOwner;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 //import com.twilio.voice.Call;
+import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.imageview.ShapeableImageView;
+import com.google.firebase.storage.FirebaseStorage;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 import com.twilio.voice.CallInvite;
 
 public class BackgroundCallJavaActivity extends AppCompatActivity {
@@ -49,7 +57,7 @@ public class BackgroundCallJavaActivity extends AppCompatActivity {
     private ImageView btnMute;
     private ImageView btnOutput;
     private ImageView btnHangUp;
-    private ImageView cvImage;
+    private ShapeableImageView cvImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +70,7 @@ public class BackgroundCallJavaActivity extends AppCompatActivity {
         btnMute = (ImageView) findViewById(R.id.btnMute);
         btnOutput = (ImageView) findViewById(R.id.btnOutput);
         btnHangUp = (ImageView) findViewById(R.id.btnHangUp);
-        cvImage = (ImageView) findViewById(R.id.cvImage);
+        cvImage = (ShapeableImageView) findViewById(R.id.cvImage);
 
 
         KeyguardManager kgm = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
@@ -228,13 +236,33 @@ public class BackgroundCallJavaActivity extends AppCompatActivity {
         deactivateSensor();
     }
 
-    public void loadImageFromFirebase(String imageUrl, ImageView imageView) {
-        Picasso picassoInstance = new  Picasso.Builder(getBaseContext())
+    public void loadImageFromFirebase(String imageUrl, ShapeableImageView imageView) {
+        /*Picasso picassoInstance = new  Picasso.Builder(getBaseContext())
                 .addRequestHandler(new FirebaseRequestHandler())
                 .build();
 
-        picassoInstance.load("images/users/" + imageUrl)
+        picassoInstance.load("gs://test-project-396e8.appspot.com/images/users/" + imageUrl)
                 .fit().centerInside()
-                .into(imageView);
+                .into(new Target() {
+                    @Override
+                    public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+
+                    }
+
+                    @Override
+                    public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+
+                    }
+
+                    @Override
+                    public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+                    }
+                });*/
+
+        FirebaseStorage.getInstance().getReferenceFromUrl("gs://test-project-396e8.appspot.com/images/users/" + imageUrl)
+                .getDownloadUrl().addOnSuccessListener(uri -> {
+                    Glide.with(this).load(uri).into(imageView);
+                });
     }
 }

@@ -201,7 +201,7 @@ public class SwiftTwilioVoicePlugin: NSObject, FlutterPlugin,  FlutterStreamHand
             }
             
         }else if flutterCall.method == "hangUp"{
-            if (self.call != nil && self.call?.state == .connected) {
+            if (self.call != nil) {
                 self.sendPhoneCallEvents(description: "LOG|hangUp method invoked", isError: false)
                 self.userInitiatedDisconnect = true
                 performEndCallAction(uuid: self.call!.uuid!)

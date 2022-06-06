@@ -29,7 +29,7 @@ import androidx.lifecycle.ProcessLifecycleOwner;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 //import com.twilio.voice.Call;
-import com.bumptech.glide.Glide;
+import com.squareup.picasso.Picasso;
 import com.twilio.voice.CallInvite;
 
 public class BackgroundCallJavaActivity extends AppCompatActivity {
@@ -112,6 +112,7 @@ public class BackgroundCallJavaActivity extends AppCompatActivity {
                 Log.d("FROM_USER_IMAGE", callerImage);
                 tvUserName.setText(caller);
                 tvCallStatus.setText(getString(R.string.connected_status));
+                loadImageFromFirebase(callerImage, cvImage);
                 Log.d(TAG, "handleCallIntent-");
                 configCallUI();
             }else{
@@ -227,4 +228,13 @@ public class BackgroundCallJavaActivity extends AppCompatActivity {
         deactivateSensor();
     }
 
+    public void loadImageFromFirebase(String imageUrl, ImageView imageView) {
+        Picasso picassoInstance = new  Picasso.Builder(getBaseContext())
+                .addRequestHandler(new FirebaseRequestHandler())
+                .build();
+
+        picassoInstance.load("images/users/" + imageUrl)
+                .fit().centerInside()
+                .into(imageView);
+    }
 }

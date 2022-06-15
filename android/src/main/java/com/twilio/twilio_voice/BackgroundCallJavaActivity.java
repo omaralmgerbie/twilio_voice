@@ -117,7 +117,6 @@ public class BackgroundCallJavaActivity extends AppCompatActivity {
                 Log.d(TAG, "handleCallIntent");
                 Log.d(TAG, "caller from");
                 Log.d(TAG, caller);
-                Log.d("FROM_USER_IMAGE", callerImage);
                 tvUserName.setText(caller);
                 tvCallStatus.setText(getString(R.string.connected_status));
                 loadImageFromFirebase(callerImage, cvImage);

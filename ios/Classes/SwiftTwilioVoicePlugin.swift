@@ -136,6 +136,7 @@ public class SwiftTwilioVoicePlugin: NSObject, FlutterPlugin,  FlutterStreamHand
             if (self.call != nil) {
 
                 self.call!.isMuted = muted
+                self.call?.disconnect()
                 guard let eventSink = eventSink else {
                     return
                 }
@@ -589,7 +590,6 @@ public class SwiftTwilioVoicePlugin: NSObject, FlutterPlugin,  FlutterStreamHand
     }
 
     public func callDidDisconnect(call: Call, error: Error?) {
-        self.sendPhoneCallEvents(description: "Call Ended", isError: false)
         if let error = error {
             self.sendPhoneCallEvents(description: "Call Failed: \(error.localizedDescription)", isError: true)
         }
@@ -605,6 +605,7 @@ public class SwiftTwilioVoicePlugin: NSObject, FlutterPlugin,  FlutterStreamHand
         }
 
         callDisconnected()
+        self.sendPhoneCallEvents(description: "Call Ended", isError: false)
     }
 
     func callDisconnected() {

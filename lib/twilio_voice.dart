@@ -2,6 +2,7 @@ library twilio_voice;
 
 import 'dart:async';
 import 'dart:convert';
+import 'dart:developer';
 import 'package:flutter/services.dart';
 
 part 'models/active_call.dart';
@@ -119,6 +120,7 @@ class TwilioVoice {
   }
 
   CallEvent _parseCallEvent(String state) {
+    log('_parseCallEvent: $state');
     if (state.startsWith("DEVICETOKEN|")) {
       var token = state.split('|')[1];
       if (deviceTokenChanged != null) {
